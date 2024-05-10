@@ -34,3 +34,31 @@ group by active_group
 ```
 ![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/5a70a22b-5ead-4595-9c76-5d382d6cbfcb)
 
+```
+mydf <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/data_done2.csv")
+
+mydf$activityhour = as.POSIXct(mydf$activitydate, format = "%m/%d/%Y %I:%M:%S %p",tz = Sys.timezone())
+
+intensity <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/hourlyIntensities_merged.csv")
+
+intensity$ActivityHour=as.POSIXct(intensity$ActivityHour, format = "%m/%d/%Y %I:%M:%S %p",tz = Sys.timezone())
+
+intensity <- intensity %>% 
+  rename(id = 'Id')
+
+df2 <- mydf %>% 
+  inner_join(intensity)
+
+df2 <- df2 %>% 
+  mutate(ActivityHour = ymd_hms(ActivityHour),
+         hours = hour(ActivityHour), mins = minute(ActivityHour),
+         secs = second(ActivityHour))
+
+df2 <- df2 %>% 
+  group_by(hours,active_group) %>% 
+  summarize(mean = mean(TotalIntensity))
+
+viz <- ggplot(df2) + geom_line(aes(hours,mean, group = active_group, color = active_group, size = ".5")) + labs(x = "Hour of the day", y = "Intensity of workout", title = "Intensity Of Workout per Hour")
+print(viz)
+```
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/dd76beb5-34bc-4ef4-b29c-f8c5e904d6ce)
