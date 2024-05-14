@@ -3,10 +3,24 @@
 ## Summary
 
 ## Ask
-I was asked to gain insight on how customers are using the non-Bellabeat smart devices. Using this information, I can draw conclusions for how to apply these insights.
+My task is to gain insight on how customers are using the non-Bellabeat smart devices. Using the smart device data, I can draw conclusions using the following questions as guidelines:
+
 
 ## Prepare
+First I wanted to take a look at the data to see what kind of information we are dealing with. 
+```
+head(daily_activity)
+colnames(daily_activity)
 
+```
+The Daily Activity table
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/6ab62f44-2b6d-44aa-ac60-d90b615e6537)
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/10bd7bb1-d7aa-4787-b73e-ee0649db2ec7)
+
+This table contains useful information on intensities of workouts throughout the day and calories, etc.
+
+```
+head(daily_slee
 After cleaning the data, I used SQL to classify the users into groups based on their average sedentary time spent per day. 
 ```
 with cte as (select id,active_group,row_number() over (partition by id order by count(*) desc), count(*) from (select
