@@ -57,20 +57,32 @@ sleep_day %>%
 We can already see from the Total Minutes Asleep and Total Time in Bed summaries that there is a clear discrepency. This is something we should definitely explore down the line. 
 I then brought the data into SQL so I could easily group the data into different categories. First, let's use our information on the sedentary minutes to see divide the users based on their time spent sendentary per day.
 ```
-with cte as (select id,active_group,row_number() over (partition by id order by count(*) desc), count(*) from (select
+with cte as (
+	select 
 	id
-	,case when sedentaryminutes > 1200 then 'Extra Sedentary'
-	when sedentaryminutes between 900 and 1200 then 'Avg Sedentary'
-	when sedentaryminutes < 900 then 'Not Sedentary'
-	end active_group
-from daily
+	,active_group
+	,row_number() over (partition by id order by count(*) desc)
+	,count(*) from (
+		select id
+		,case 
+			when sedentaryminutes > 1229 then 'Extra Sedentary'
+			when sedentaryminutes between 991 and 1229 then 'Avg Sedentary'
+			when sedentaryminutes < 991 then 'Not Sedentary'
+		end as active_group
+	from daily
 ) as temp
 group by id,active_group
-)
+	)
 
-select cte.active_group,daily.* from cte 
-inner join daily on daily.id = cte.id
+select
+	cte.active_group,
+	daily.*
+from cte 
+inner join daily
+	on daily.id = cte.id
 where row_number = 1
+
+
 ```
 As expected, the results were distributed fairly evenly among the users:
 ```
