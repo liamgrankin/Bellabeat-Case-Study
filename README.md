@@ -86,7 +86,27 @@ group by active_group
 ```
 ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y= TotalTimeInBed)) + geom_point() + geom_smooth()
 ```
-We can see that there is definitely more time spent in bed than asleep. Let's explore this further.
+We can see that there is definitely more time spent in bed than asleep. Let's explore this further. First let's set up the data to be broken up by week.
+
+```
+daily_sleep <- sleep_day %>%
+  rename(date = SleepDay) %>%
+  mutate(date = as_date(date, format ="%m/%d/%Y %I:%M:%S %p", tz = Sys.timezone()))
+
+weekday_sleep <- daily_sleep %>%
+  mutate(weekday = weekdays(date))
+
+weekday_sleep$weekday <-ordered(weekday_sleep$weekday, levels=c("Monday", "Tuesday", "Wednesday", "Thursday","Friday", "Saturday", "Sunday"))
+
+weekday_sleep <-weekday_sleep %>%
+  group_by(weekday) %>%
+  summarize (mins_asleep = mean(TotalMinutesAsleep),mins_inbed = mean(TotalTimeInBed))
+
+ggplot(weekday_sleep, aes(x = weekday, y = mins_asleep,mins_inbed, fill = mins_inbed)) + geom_bar(stat = "identity")
+
+weekday_sleep$Difference = weekday_sleep$mins_inbed - weekday_sleep$mins_asleep
+average_difference <- mean(weekday_sleep$Difference)
+```
 
 ``` 
 ggplot(weekday_sleep, aes(x = weekday, y = mins_inbed, fill = "Minutes in Bed")) +
