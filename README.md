@@ -88,6 +88,20 @@ ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y= TotalTimeInBed)) + geom_poin
 ```
 We can see that there is definitely more time spent in bed than asleep. Let's explore this further.
 
+``` 
+ggplot(weekday_sleep, aes(x = weekday, y = mins_inbed, fill = "Minutes in Bed")) +
+  geom_bar(stat = "identity") +
+  geom_bar(aes(y = mins_asleep, fill = "Minutes Asleep"), stat = "identity") +
+  scale_fill_manual(values = c("Minutes in Bed" = "steelblue", "Minutes Asleep" = "lightblue")) +
+  labs(title = "Weekly Sleep Analysis",
+       subtitle = paste("Average difference:", round(average_difference, 2), "minutes"),
+       x = "Day of the Week",
+       y = "Total Minutes",
+       fill = "Legend") +
+  theme_minimal()
+```
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/7fb49263-80a6-478c-b5a6-39777925a90b)
+
 
 ```
 mydf <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/data_done2.csv")
