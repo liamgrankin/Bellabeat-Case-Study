@@ -3,28 +3,63 @@
 ## Summary
 
 ## Ask
-My task is to gain insight on how customers are using the non-Bellabeat smart devices. Using the smart device data, I can draw conclusions using the following questions as guidelines:
+### What is the question I am trying to solve?
+A stakeholder is asking me to analyze smart device usage data to gain insight into how consumers use non-Bellabeat smart
+devices. Then, they want me to select one Bellabeat product to apply these insights for my presentation. 
 
+My task is to gain insight on how customers are using the non-Bellabeat smart devices. Using the smart device data, I can draw conclusions using the following questions as guidelines:
+1. What are some trends in smart device usage?
+2. How could these trends apply to Bellabeat customers?
+3. How could these trends help influence Bellabeat marketing strategy?
 
 ## Prepare
-First I wanted to take a look at the data to see what kind of information we are dealing with. 
+To answer the business task at hand, I will need a data set to observe. Kaggle provides a public dataset on smart device usage that explores the 30 users' daily habits. Essentially, 30 users consented to submitting their personal tracking data including minute-level output for physical activity, heart rate, and sleep monitoring. It includes
+information about daily activity, steps, and heart rate that can be used to explore users’ habits.
+
+### How is the data stored?
+
+The fitness data is broken up into two months (March 2016 and April 2016). Each of these months are further broken down into individual CSV files containing the health and fitness information from the users over the course of the month.
+
+After observing the files, it appears the "daily_merged" file is a table with a wide format that contains several of the other tables information. We can observe the daily_activity table here:
 ```
 head(daily_activity)
 colnames(daily_activity)
 nrow(daily_activity)
 ```
-The Daily Activity table
-![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/6ab62f44-2b6d-44aa-ac60-d90b615e6537)
+After exploring the csvs in Excel, it appears that the dailyActivity_merged file is a wide table containing information from several of the other CSVs. Let's take a look at the Daily Activity, Sleep, and Weight tables.
+```
+weight_1 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/weightLogInfo_merged.csv")
+weight_2 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/weightLogInfo_merged_2.csv")
+daily_1 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/dailyActivity_merged.csv")
+daily_2 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/dailyActivity_merged_2.csv")
+sleep_1 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/minuteSleep_merged_1.csv")
+sleep_2 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/minuteSleep_merged_2.csv")
+
+-- Each file is divided into two months. The two months have identical columns so we are able easily merge the tables
+
+weight <- bind_rows(weight_1,weight_2)
+daily <- bind_rows(daily_1,daily_2)
+sleep <- bind_rows(sleep_1,sleep_2)
+
+n_distinct(weight$Id)
+n_distinct(daily$Id)
+n_distinct(sleep$Id)
+```
+We can see that the Weight table only has 13 total participants compared almost double that in the Sleep and Daily Activity tables. This may make it hard to draw meaningful conclusions due to the small sample size.
+
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/977e03aa-4ecb-43fb-afe9-12f315ce33c6)
+
+#### The Daily Activity table
+```
+colnames(daily)
+```
 ![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/10bd7bb1-d7aa-4787-b73e-ee0649db2ec7)
 
 This table contains useful information on intensities of workouts throughout the day and calories, etc.
 
 ```
-head(sleep_day)
 colnames(sleep_day)
-
 ```
-![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/f312173f-2f52-4ecb-898f-f907f0797b4a)
 ![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/9f05e0f1-570e-4ef3-800d-9d4a1c38a1a1)
 
 
@@ -98,6 +133,8 @@ group by active_group
 ```
 ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y= TotalTimeInBed)) + geom_point() + geom_smooth()
 ```
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/9499aacd-fade-40f6-b33b-eef84e79864e)
+
 We can see that there is definitely more time spent in bed than asleep. Let's explore this further. First let's set up the data to be broken up by week.
 
 ```
@@ -134,6 +171,16 @@ ggplot(weekday_sleep, aes(x = weekday, y = mins_inbed, fill = "Minutes in Bed"))
 ```
 ![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/7fb49263-80a6-478c-b5a6-39777925a90b)
 
+Here we can look at the relationship between total steps + distance per day and calories burned
+
+```
+ggplot(daily, aes(x = totalsteps, y = calories, color = totaldistance)) +
+  geom_point() +  
+  scale_color_gradient(low = "skyblue", high = "navyblue") +
+  labs(title = "Calories burned by Total Steps",x = "Total Steps", y = "Calories Burned", color = "Total Distance") +
+  theme_minimal()
+```
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/f25c9953-701d-458f-907c-8b3347bffa30)
 
 ```
 mydf <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/data_done2.csv")
