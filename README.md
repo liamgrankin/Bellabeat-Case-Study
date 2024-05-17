@@ -1,7 +1,8 @@
 # Bellabeat-Case-Study
+![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/dd567450-a08f-45c3-a680-fd94087c6c08)
 
 ## Summary
-
+In this case study I am a junior data analyst working for a fitness company called Bellabeat. They are looking to expand their market by utilizing data of other fitness tracking apps. 
 ## Ask
 ### What is the question I am trying to solve?
 A stakeholder is asking me to analyze smart device usage data to gain insight into how consumers use non-Bellabeat smart
@@ -88,6 +89,9 @@ sleep_day %>%
   summary()
 ```
 ![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/2f864dd7-09f8-4edf-bfb8-399cfb5b8586)
+## Process 
+The next step is to process the data. Let's take the data and tools that we have assembled and format the data in a way ready for analysis. 
+
 
 We can already see from the Total Minutes Asleep and Total Time in Bed summaries that there is a clear discrepency. This is something we should definitely explore down the line. 
 I then brought the data into SQL so I could easily group the data into different categories. First, let's use our information on the sedentary minutes to see divide the users based on their time spent sendentary per day.
