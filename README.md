@@ -27,7 +27,7 @@ head(daily_activity)
 colnames(daily_activity)
 nrow(daily_activity)
 ```
-After exploring the csvs in Excel, it appears that the dailyActivity_merged file is a wide table containing information from several of the other CSVs. Let's take a look at the Daily Activity, Sleep, and Weight tables.
+After exploring the csvs in Excel, it appears that the dailyActivity_merged file is a wide table containing information from several of the other CSVs. Let's take a look at the Daily Activity, Sleep, and Weight tables. In order to view the data in its totality, I combined the two months into one dataframe.
 ```
 weight_1 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/weightLogInfo_merged.csv")
 weight_2 <- read_csv("C:/Users/liamg/OneDrive/Documents/capstone/weightLogInfo_merged_2.csv")
@@ -46,9 +46,10 @@ n_distinct(weight$Id)
 n_distinct(daily$Id)
 n_distinct(sleep$Id)
 ```
-We can see that the Weight table only has 13 total participants compared almost double that in the Sleep and Daily Activity tables. This may make it hard to draw meaningful conclusions due to the small sample size.
 
 ![image](https://github.com/liamgrankin/Bellabeat-Case-Study/assets/54017776/977e03aa-4ecb-43fb-afe9-12f315ce33c6)
+We can see that the Weight table only has 13 total participants compared almost double that in the Sleep and Daily Activity tables. This may make it hard to draw meaningful conclusions due to the small sample size.
+
 
 #### The Daily Activity table
 ```
